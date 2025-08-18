@@ -1,0 +1,34 @@
+### Test GHC-DT agent via LangGraph backend
+
+POST http://localhost:8000/agents/ghc_dt/invoke
+Content-Type: application/json
+
+{
+  "question": "What is the strategic outlook for Green Hill Canarias?",
+  "state": {}
+}
+
+### Test Green Hill agent via LangGraph backend
+POST http://localhost:8000/agents/green_hill/invoke
+Content-Type: application/json
+
+{
+  "question": "What are the compliance requirements?",
+  "state": {
+    "agent_type": "Compliance"
+  }
+}
+
+### Health check
+GET http://localhost:8000/health
+
+### Generic invoke endpoint (legacy)
+POST http://localhost:8000/invoke
+Content-Type: application/json
+
+{
+  "question": "ping",
+  "state": {
+    "agent": "ghc_dt"
+  }
+}

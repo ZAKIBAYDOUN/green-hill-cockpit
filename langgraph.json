@@ -6,10 +6,14 @@
     "requests",
     "langgraph>=0.2.0",
     "langchain>=0.2.0",
-    "langchain-openai"
+    "langchain-openai",
+    "langchain-core",
+    "fastapi",
+    "uvicorn"
   ],
   "graphs": {
-    "green_hill_agent": "./agent.py:graph"
+    "green_hill_agent": "./agent.py:graph",
+    "ghc_dt": "./agents/ghc_dt.py:ghc_dt_graph"
   },
   "env": ".env.example"
 }
