@@ -6,7 +6,7 @@ import uvicorn
 
 # Import the agents
 from agent import graph as green_hill_graph
-from agents.ghc_dt import ghc_dt_graph, run_ghc_dt
+from ghc_dt_agent import ghc_dt_graph, run_ghc_dt
 
 app = FastAPI(title="Green Hill LangGraph API", version="1.0.0")
 

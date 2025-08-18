@@ -1,19 +1,13 @@
 {
-  "python_version": "3.11",
   "dependencies": [
-    "streamlit",
-    "openai>=1.0.0",
-    "requests",
     "langgraph>=0.2.0",
-    "langchain>=0.2.0",
-    "langchain-openai",
     "langchain-core",
-    "fastapi",
-    "uvicorn"
+    "langchain-openai",
+    "openai>=1.0.0"
   ],
   "graphs": {
-    "green_hill_agent": "./agent.py:graph",
-    "ghc_dt": "./agents/ghc_dt.py:ghc_dt_graph"
+    "agent": "./agent.py:graph",
+    "ghc_dt": "./ghc_dt_agent.py:ghc_dt_graph"
   },
   "env": ".env.example"
 }
