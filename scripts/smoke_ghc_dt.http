@@ -1,34 +1,31 @@
-### Test GHC-DT agent via LangGraph backend
+### Health check
+GET http://localhost:8080/health
 
-POST http://localhost:8000/agents/ghc_dt/invoke
+### Readiness check  
+GET http://localhost:8080/ready
+
+### Service version
+GET http://localhost:8080/version
+
+### List available graphs
+GET http://localhost:8080/graphs
+
+### Invoke CEO Digital Twin agent
+POST http://localhost:8080/agents/ceo-dt/invoke
 Content-Type: application/json
 
 {
-  "question": "What is the strategic outlook for Green Hill Canarias?",
-  "state": {}
-}
-
-### Test Green Hill agent via LangGraph backend
-POST http://localhost:8000/agents/green_hill/invoke
-Content-Type: application/json
-
-{
-  "question": "What are the compliance requirements?",
-  "state": {
-    "agent_type": "Compliance"
+  "input": {
+    "query": "Ping"
   }
 }
 
-### Health check
-GET http://localhost:8000/health
-
-### Generic invoke endpoint (legacy)
-POST http://localhost:8000/invoke
+### Invoke CEO-DT with strategic question
+POST http://localhost:8080/agents/ceo-dt/invoke  
 Content-Type: application/json
 
 {
-  "question": "ping",
-  "state": {
-    "agent": "ghc_dt"
+  "input": {
+    "query": "What is the strategic outlook for Green Hill Canarias?"
   }
 }

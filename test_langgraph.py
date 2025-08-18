@@ -27,7 +27,7 @@ def test_langgraph_config():
         except Exception as e:
             print(f"❌ {graph_name}: {e}")
     
-    print("\n🎯 LangGraph configuration is ready!")
+    print("\n🎯 LangGraph configuration is ready for deployment!")
 
 if __name__ == "__main__":
     test_langgraph_config()

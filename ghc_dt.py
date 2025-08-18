@@ -1,6 +1,4 @@
 import os
-import requests
-import streamlit as st
 import json
 from datetime import datetime
 from typing import Optional, Dict, Any, TypedDict
@@ -75,7 +73,11 @@ workflow.add_node("ghc_dt", ghc_dt_node)
 workflow.set_entry_point("ghc_dt")
 workflow.add_edge("ghc_dt", END)
 
+# Export the compiled graph with a clear name
 ghc_dt_graph = workflow.compile()
+
+# Also make it available as 'graph' for simpler import
+graph = ghc_dt_graph
 
 def run_ghc_dt(question: str, state: Optional[dict] = None) -> dict:
     """

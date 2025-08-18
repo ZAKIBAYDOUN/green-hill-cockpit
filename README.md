@@ -4,7 +4,7 @@ Green Hill Executive Cockpit with LangGraph-powered agents including GHC-DT (CEO
 
 ## Architecture
 
-- **LangGraph Backend**: FastAPI server running LangGraph agents
+- **LangGraph Backend**: LangGraph Cloud service running on port 8080
 - **Streamlit Frontend**: Executive cockpit interface
 - **Agents**:
   - GHC-DT (CEO Digital Twin): Executive-focused agent using LangChain & OpenAI
@@ -31,50 +31,38 @@ GHC_DT_SYSTEM_PROMPT=You are GHC-DT, the CEO Digital Twin of Green Hill Canarias
 GHC_DT_EVIDENCE_LOG=evidence.jsonl
 ```
 
-### Local Development
-
-1. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-2. Start the LangGraph server:
-```bash
-./start_server.sh
-# OR manually:
-python server.py
-```
-
-3. In another terminal, start Streamlit:
-```bash
-streamlit run streamlit_app.py
-```
-
 ### Cloud Deployment
 
-#### LangGraph Service
-Deploy to your cloud provider using the `langgraph.json` configuration.
+#### LangGraph Cloud Service
+Deploy to LangGraph Cloud using the `langgraph.json` configuration.
+Service runs on port 8080 with standard endpoints.
 
 #### Streamlit Cloud
 1. Connect your repository to Streamlit Cloud
 2. Configure secrets:
    - `OPENAI_API_KEY`
-   - `LANGGRAPH_API_URL` (your deployed LangGraph service URL)
+   - `BACKEND_BASE_URL` (your deployed LangGraph service URL)
    - `LANGGRAPH_API_KEY` (if authentication is enabled)
 
 ## API Endpoints
 
+LangGraph service endpoints on port 8080:
+
 - `GET /health` - Health check
-- `POST /agents/ghc_dt/invoke` - GHC-DT (CEO Digital Twin)
-- `POST /agents/green_hill/invoke` - Green Hill specialists
-- `POST /invoke` - Generic endpoint with agent routing
+- `GET /ready` - Readiness check
+- `GET /version` - Service version
+- `GET /graphs` - Available graphs
+- `POST /agents/ceo-dt/invoke` - CEO Digital Twin invocation
 
 ## Testing
 
 Use the smoke test file:
 ```bash
-# Install a REST client like httpie or use VS Code REST Client
 # Open scripts/smoke_ghc_dt.http in VS Code and run the requests
+# Or use curl:
+curl -X POST http://localhost:8080/agents/ceo-dt/invoke \
+  -H "Content-Type: application/json" \
+  -d '{"input":{"query":"Ping"}}'
 ```
 
 ## Agents
@@ -95,3 +83,30 @@ Domain experts in:
 - **Risk**: Regulatory and operational risks
 - **Compliance**: AEMPS, EU-GMP requirements
 - **Innovation**: R&D, technology advancement
+
+## Runbook
+
+### Deploy to LangGraph Cloud
+1. Push code to main branch
+2. Configure LangGraph Cloud deployment
+3. Set environment variables (OPENAI_API_KEY, etc.)
+4. Wait for deployment to complete
+
+### Deploy Streamlit
+1. Connect repo to Streamlit Cloud
+2. Set BACKEND_BASE_URL to your LangGraph service URL
+3. Configure additional secrets as needed
+
+### Smoke Test
+```bash
+# Health check
+curl http://your-service:8080/health
+
+# List graphs
+curl http://your-service:8080/graphs
+
+# Invoke CEO-DT
+curl -X POST http://your-service:8080/agents/ceo-dt/invoke \
+  -H "Content-Type: application/json" \
+  -d '{"input":{"query":"What is the strategic outlook?"}}'
+```
