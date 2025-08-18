@@ -1,13 +1,14 @@
 {
+  "python_version": "3.11",
   "dependencies": [
     "langgraph>=0.2.0",
-    "langchain-core",
-    "langchain-openai",
-    "openai>=1.0.0"
+    "langchain-core>=0.3.0",
+    "langchain-openai>=0.2.0", 
+    "openai>=1.14.0",
+    "typing-extensions>=4.8.0"
   ],
   "graphs": {
     "agent": "./agent.py:graph",
     "ghc_dt": "./ghc_dt_agent.py:ghc_dt_graph"
-  },
-  "env": ".env.example"
+  }
 }

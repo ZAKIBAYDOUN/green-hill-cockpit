@@ -1,0 +1,19 @@
+# Simple Dockerfile to test LangGraph build locally
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Copy requirements
+COPY langgraph.json .
+COPY *.py .
+
+# Install dependencies 
+RUN pip install langgraph>=0.2.0 langchain-core>=0.3.0 langchain-openai>=0.2.0 openai>=1.14.0 typing-extensions>=4.8.0
+
+# Test imports
+RUN python -c "from agent import graph; from ghc_dt_agent import ghc_dt_graph; print('✅ All graphs imported successfully')"
+
+# Test graph compilation
+RUN python -c "import json; config=json.load(open('langgraph.json')); print('✅ Config loaded:', list(config['graphs'].keys()))"
+
+CMD ["echo", "LangGraph build test successful"]
