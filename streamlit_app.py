@@ -46,53 +46,31 @@ AGENTS = {
 selected_agent = st.selectbox("Select Agent:", list(AGENTS.keys()))
 user_query = st.text_area("Your query:", height=100)
 
-def call_langgraph_backend(question, agent_type="green_hill", state=None):
-    """Call LangGraph backend for any agent"""
+def call_agent(agent_id: str, payload: dict):
+    """Invoke a backend agent."""
     api_url = os.getenv("LANGGRAPH_API_URL", "http://localhost:8000")
-    
-    # Route to specific agent endpoint
-    if agent_type == "ghc_dt":
-        endpoint = f"{api_url}/agents/ghc_dt/invoke"
-    else:
-        endpoint = f"{api_url}/agents/green_hill/invoke"
-    
-    headers = {"Content-Type": "application/json"}
-    api_key = os.getenv("LANGGRAPH_API_KEY")
-    if hasattr(st, "secrets") and "LANGGRAPH_API_KEY" in st.secrets:
-        api_key = st.secrets["LANGGRAPH_API_KEY"]
-    if api_key:
-        headers["Authorization"] = f"Bearer {api_key}"
-    
-    payload = {"question": question, "state": state or {}}
-    
     try:
-        resp = requests.post(endpoint, json=payload, headers=headers, timeout=30)
-        if resp.status_code == 200:
-            data = resp.json()
-            return {"response": data.get("answer", "No answer")}, f"✅ {agent_type.upper()}"
-        else:
-            return None, f"❌ Backend error: {resp.status_code}"
+        resp = requests.post(f"{api_url}/agents/{agent_id}/invoke", json=payload, timeout=30)
+        resp.raise_for_status()
+        data = resp.json()
+        return data.get("data"), f"✅ {agent_id}"
     except Exception as e:
-        return None, f"❌ Exception: {str(e)}"
-
-def call_ghc_dt_backend(question, state=None):
-    """Legacy function for backward compatibility"""
-    return call_langgraph_backend(question, "ghc_dt", state)
+        return None, f"❌ {str(e)}"
 
 if st.button("🚀 Execute"):
     if user_query.strip():
-        agent_backend_name = AGENTS[selected_agent]
-        
-        # Use LangGraph backend for all agents
         if selected_agent == "CEO-DT":
-            result, status = call_langgraph_backend(user_query, "ghc_dt")
+            payload = {"question": user_query}
+            agent_id = "ghc_dt"
         else:
-            # Pass agent type in state for other agents
-            state = {"agent_type": selected_agent}
-            result, status = call_langgraph_backend(user_query, "green_hill", state)
-        
+            payload = {"input": user_query, "agent_type": selected_agent}
+            agent_id = "green_hill"
+
+        result, status = call_agent(agent_id, payload)
+
         if result:
             st.success(status)
-            st.write(result["response"])
+            response_text = result.get("answer") or result.get("output") or result
+            st.write(response_text)
         else:
             st.error(status)
