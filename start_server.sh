@@ -1,12 +1,10 @@
 #!/bin/bash
+# Start the FastAPI server for Green Hill Cockpit
+# If this script is not executable, run the Python command directly:
+# python -m uvicorn server:app --host 0.0.0.0 --port 8000
 
-# Start the LangGraph server
-echo "Starting Green Hill LangGraph server..."
-
-# Load environment variables
 if [ -f .env ]; then
-    export $(cat .env | xargs)
+    export $(grep -v '^#' .env | xargs)
 fi
 
-# Start the FastAPI server
-python server.py
+python -m uvicorn server:app --host 0.0.0.0 --port ${PORT:-8000}

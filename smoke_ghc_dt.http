@@ -1,0 +1,16 @@
+### Health
+GET http://localhost:8000/health
+
+### Version
+GET http://localhost:8000/version
+
+### Graphs
+GET http://localhost:8000/graphs
+
+### Invoke
+POST http://localhost:8000/agents/ghc_dt/invoke
+Content-Type: application/json
+
+{
+  "input": {"question": "hello"}
+}

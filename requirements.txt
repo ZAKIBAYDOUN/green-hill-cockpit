@@ -4,4 +4,7 @@ langchain-openai
 openai>=1.14
 fastapi
 uvicorn
+pydantic
+httpx
+starlette
 requests
