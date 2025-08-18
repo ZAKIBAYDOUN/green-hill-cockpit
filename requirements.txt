@@ -5,3 +5,8 @@ openai>=1.14
 fastapi
 uvicorn
 requests
+pydantic
+httpx
+starlette
+streamlit
+pillow

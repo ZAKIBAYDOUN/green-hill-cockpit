@@ -15,14 +15,22 @@ Green Hill Executive Cockpit with LangGraph-powered agents including GHC-DT (CEO
 ### Environment Setup
 
 1. Copy environment template:
+
 ```bash
 cp .env.example .env
 ```
 
 2. Configure required environment variables in `.env`:
+
 ```env
 OPENAI_API_KEY=your_openai_api_key_here
 LANGSMITH_API_KEY=your_langsmith_api_key_here
+
+# Allow requests from Streamlit frontend
+CORS_ORIGINS=http://localhost:8501
+
+# Optional: proxy mode for LangGraph Cloud
+LANGGRAPH_BASE_URL=https://your-langgraph-cloud
 
 # GHC-DT Configuration
 GHC_DT_MODEL=gpt-4o-mini
@@ -33,16 +41,17 @@ GHC_DT_EVIDENCE_LOG=evidence.jsonl
 
 ### Local Development
 
-1. Install dependencies:
+1. Install dependencies (FastAPI, Streamlit, Pillow, etc.):
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Start the LangGraph server:
+2. Start the backend server:
+
 ```bash
-./start_server.sh
-# OR manually:
-python server.py
+bash start_server.sh
+# OR manually
+python -m uvicorn server:app --host 0.0.0.0 --port 8000
 ```
 
 3. In another terminal, start Streamlit:
@@ -64,17 +73,18 @@ Deploy to your cloud provider using the `langgraph.json` configuration.
 
 ## API Endpoints
 
-- `GET /health` - Health check
-- `POST /agents/ghc_dt/invoke` - GHC-DT (CEO Digital Twin)
-- `POST /agents/green_hill/invoke` - Green Hill specialists
-- `POST /invoke` - Generic endpoint with agent routing
+- `GET /health` – health check
+- `GET /version` – service version
+- `GET /graphs` – list available graphs
+- `POST /agents/{id}/invoke` – invoke a specific agent
 
 ## Testing
 
 Use the smoke test file:
+
 ```bash
-# Install a REST client like httpie or use VS Code REST Client
-# Open scripts/smoke_ghc_dt.http in VS Code and run the requests
+# With a REST client such as VS Code's REST Client extension
+# Run the requests in scripts/smoke_ghc_dt.http
 ```
 
 ## Agents
