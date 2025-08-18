@@ -1,8 +1,9 @@
+import os
 import streamlit as st
 from pathlib import Path
 
-PALETTE = {"bg":"#F0F0F0","green":"#204030","gold":"#C09030"}
-LANGS = {"English":"en","Íslenska":"is","Français":"fr","Español":"es"}
+PALETTE = {"bg": "#F0F0F0", "green": "#204030", "gold": "#C09030"}
+ALL_LANGS = {"en": "English", "is": "Íslenska", "fr": "Français", "es": "Español"}
 
 def inject_theme():
     st.markdown(f"""
@@ -23,8 +24,17 @@ def inject_theme():
     """, unsafe_allow_html=True)
 
 def topbar(title="🌿 Green Hill Cockpit"):
-    choice = st.selectbox("🌐 Language", list(LANGS.keys()), index=0, key="lang_select")
-    st.session_state["lang"] = LANGS[choice]
+    allowed = [c.strip() for c in os.getenv("ALLOWED_LANGUAGES", "en,is,fr,es").split(",") if c.strip() in ALL_LANGS]
+    if not allowed:
+        allowed = list(ALL_LANGS.keys())
+    default_code = os.getenv("DEFAULT_LANGUAGE", allowed[0])
+    options = [(ALL_LANGS[c], c) for c in allowed]
+    labels = [label for label, _ in options]
+    default_index = next((i for i, (_, code) in enumerate(options) if code == default_code), 0)
+    choice = st.selectbox("🌐 Language", labels, index=default_index, key="lang_select")
+    # map label back to code
+    code = options[labels.index(choice)][1]
+    st.session_state["lang"] = code
     st.markdown(
         f"""
         <div class='gh-header'>

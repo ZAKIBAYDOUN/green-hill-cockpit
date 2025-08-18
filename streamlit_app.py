@@ -45,11 +45,12 @@ def call_agent(agent_id: str, payload: dict):
 
 if st.button("🚀 Execute"):
     if user_query.strip():
+        lang = st.session_state.get("lang", os.getenv("DEFAULT_LANGUAGE", "en"))
         if selected_agent == "CEO-DT":
-            payload = {"input": {"query": user_query}}
+            payload = {"input": {"query": user_query, "language": lang}}
             agent_id = "ceo-dt"
         else:
-            payload = {"input": user_query, "agent_type": selected_agent}
+            payload = {"input": user_query, "agent_type": selected_agent, "language": lang}
             agent_id = "green_hill"
 
         result, status = call_agent(agent_id, payload)

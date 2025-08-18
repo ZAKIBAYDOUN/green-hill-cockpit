@@ -29,6 +29,7 @@ BACKEND_BASE_URL=https://digitalroots-bf3899aefd705f6789c2466e0c9b974d.us.langgr
 ### Smoke tests
 ```bash
 curl http://localhost:8080/health
+curl http://localhost:8080/ready
 curl http://localhost:8080/version
 curl http://localhost:8080/graphs
 curl -X POST http://localhost:8080/agents/ceo-dt/invoke -H "Content-Type: application/json" -d '{"input":{"query":"Ping"}}'
