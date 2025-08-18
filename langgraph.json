@@ -1,0 +1,13 @@
+{
+  "graphs": {
+    "green_hill_cockpit": "./main.py:app"
+  },
+  "python_version": "3.11",
+  "dependencies": [
+    "streamlit",
+    "openai",
+    "requests",
+    "langgraph",
+    "langchain"
+  ]
+}
