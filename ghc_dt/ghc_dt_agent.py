@@ -3,8 +3,36 @@ import json
 from datetime import datetime
 from typing import Optional, Dict, Any, TypedDict
 from langgraph.graph import StateGraph, END
-from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage, SystemMessage
+from openai import OpenAI
+
+api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=api_key) if api_key else None
+
+def choose_model() -> str:
+    explicit = os.getenv("MODEL_NAME")
+    if explicit:
+        return explicit
+    return "gpt-5"
+
+def run_ceo_dt(question: str) -> Dict[str, Any]:
+    if not client:
+        return {"text": f"Echo: {question}", "model": "echo"}
+
+    messages = [{"role": "user", "content": question}]
+    model = choose_model()
+    try:
+        resp = client.chat.completions.create(model=model, messages=messages)
+        return {"text": resp.choices[0].message.content, "model": model}
+    except Exception as e:
+        if not os.getenv("MODEL_NAME") and model == "gpt-5":
+            try:
+                fallback_model = "gpt-4o"
+                resp = client.chat.completions.create(model=fallback_model, messages=messages)
+                return {"text": resp.choices[0].message.content, "model": fallback_model}
+            except Exception as e2:
+                return {"text": f"Echo: {question} (fallback, error: {e2})", "model": "echo"}
+        return {"text": f"Echo: {question} (fallback, error: {e})", "model": "echo"}
+
 
 class GHCDTState(TypedDict):
     question: str
@@ -13,39 +41,18 @@ class GHCDTState(TypedDict):
     meta: dict
 
 def ghc_dt_node(state: GHCDTState) -> GHCDTState:
-    """
-    GHC-DT (CEO Digital Twin) LangGraph node that connects to real LangGraph agents.
-    Uses LangChain ChatOpenAI instead of direct OpenAI API calls.
-    """
+    """GHC-DT (CEO Digital Twin) LangGraph node."""
     question = state.get("question", "")
-    agent_type = state.get("agent_type", "CEO")
-    
-    system_prompt = os.getenv(
-        "GHC_DT_SYSTEM_PROMPT",
-        "You are GHC-DT, the CEO Digital Twin of Green Hill Canarias. Be concise, executive, and action-oriented. If information is unknown, say 'Unknown'. Structure answers as: Summary, Key Points, Next Actions. Avoid internal file names in public outputs. Log evidence if enabled."
-    )
-    model = os.getenv("GHC_DT_MODEL", "gpt-4o-mini")
-    temperature = float(os.getenv("GHC_DT_TEMPERATURE", "0.2"))
-    
-    api_key = os.getenv("OPENAI_API_KEY")
-    try:
-        if api_key:
-            llm = ChatOpenAI(model=model, temperature=temperature, openai_api_key=api_key)
-            messages = [SystemMessage(content=system_prompt), HumanMessage(content=question)]
-            answer = llm.invoke(messages).content
-        else:
-            raise RuntimeError("no api key")
-    except Exception:
-        answer = f"Echo: {question}"
-    
-    result = {
+    result = run_ceo_dt(question)
+    answer = result["text"]
+
+    node_result = {
         "question": question,
         "answer": answer,
         "agent_type": "ghc_dt",
-        "meta": {"agent": "ghc_dt", "tokens": None}  # LangChain doesn't expose token count directly
+        "meta": {"agent": "ghc_dt", "model": result.get("model"), "tokens": None},
     }
-    
-    # Evidence logging
+
     evidence_log = os.getenv("GHC_DT_EVIDENCE_LOG")
     if evidence_log:
         log_entry = {
@@ -53,17 +60,16 @@ def ghc_dt_node(state: GHCDTState) -> GHCDTState:
             "question": question,
             "answer": answer,
             "state": state,
-            "meta": result["meta"]
+            "meta": node_result["meta"],
         }
         try:
             with open(evidence_log, "a") as f:
                 f.write(json.dumps(log_entry) + "\n")
         except Exception:
-            pass  # Do not fail on logging errors
-    
-    return result
+            pass
 
-# Build GHC-DT LangGraph
+    return node_result
+
 workflow = StateGraph(GHCDTState)
 workflow.add_node("ghc_dt", ghc_dt_node)
 workflow.set_entry_point("ghc_dt")
@@ -72,20 +78,12 @@ workflow.add_edge("ghc_dt", END)
 ghc_dt_graph = workflow.compile()
 
 def run_ghc_dt(question: str, state: Optional[dict] = None) -> dict:
-    """
-    Run the GHC-DT agent using LangGraph.
-    This function provides compatibility with the existing interface.
-    """
+    """Run the GHC-DT agent using LangGraph."""
     input_state = {
         "question": question,
         "answer": "",
         "agent_type": "ghc_dt",
-        "meta": {}
+        "meta": {},
     }
-    
     result = ghc_dt_graph.invoke(input_state)
-    
-    return {
-        "answer": result["answer"],
-        "meta": result["meta"]
-    }
+    return {"answer": result["answer"], "meta": result["meta"]}
