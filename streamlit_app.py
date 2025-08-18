@@ -2,7 +2,20 @@ import os
 import requests
 import streamlit as st
 
-st.title("🌿 Green Hill Executive Cockpit")
+try:
+    from ghc_dt.layout import inject_theme, topbar, section_header, PALETTE
+except Exception as e:
+    st.warning(f"Layout module issue: {e}. Loading minimal theme.")
+    def inject_theme():
+        pass
+    def topbar(title="🌿 Green Hill Cockpit"):
+        st.title(title)
+    def section_header(icon_path, title, width=36):
+        st.subheader(title)
+    PALETTE = {"bg":"#F0F0F0","green":"#204030","gold":"#C09030"}
+
+inject_theme()
+topbar("🌿 Green Hill Executive Cockpit")
 
 AGENTS = {
     "Strategy": "strategy",
