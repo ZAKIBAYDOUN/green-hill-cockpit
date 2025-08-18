@@ -32,6 +32,18 @@ async def health() -> Dict[str, str]:
     return {"status": "ok", "mode": MODE}
 
 
+@app.get("/ready")
+async def ready() -> JSONResponse:
+    """Readiness probe; checks upstream in proxy mode."""
+    if LANGGRAPH_BASE_URL:
+        try:
+            await lg_client.list_graphs()
+            return JSONResponse({"status": "ok", "mode": MODE})
+        except Exception as exc:
+            return JSONResponse(status_code=503, content={"status": "error", "mode": MODE, "detail": str(exc)})
+    return JSONResponse({"status": "ok", "mode": MODE})
+
+
 @app.get("/version")
 async def version() -> Dict[str, str]:
     return {"service": "green-hill-cockpit", "version": app.version, "mode": MODE}

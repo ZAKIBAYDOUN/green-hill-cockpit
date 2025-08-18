@@ -1,6 +1,9 @@
 ### Health check
 GET http://localhost:8080/health
 
+### Readiness check
+GET http://localhost:8080/ready
+
 ### Version check
 GET http://localhost:8080/version
 

@@ -6,7 +6,8 @@ from langgraph.graph import StateGraph, END
 from openai import OpenAI
 
 api_key = os.getenv("OPENAI_API_KEY")
-client = OpenAI(api_key=api_key) if api_key else None
+# Short timeouts avoid hanging when OpenAI is unreachable
+client = OpenAI(api_key=api_key, timeout=20, max_retries=0) if api_key else None
 
 def choose_model() -> str:
     explicit = os.getenv("MODEL_NAME")

@@ -20,6 +20,12 @@ python -m uvicorn server:app --host 0.0.0.0 --port 8080
 BACKEND_BASE_URL=http://localhost:8080 streamlit run streamlit_app.py --server.port 8501
 ```
 
+To use the existing LangGraph service immediately (no build wait):
+```bash
+BACKEND_BASE_URL=https://digitalroots-bf3899aefd705f6789c2466e0c9b974d.us.langgraph.app \
+  streamlit run streamlit_app.py --server.headless true --server.port 8501
+```
+
 ### Smoke tests
 ```bash
 curl http://localhost:8080/health
