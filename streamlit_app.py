@@ -20,7 +20,7 @@ user_query = st.text_area("Your query:", height=100)
 
 def call_agent(agent_id: str, payload: dict):
     """Invoke a backend agent."""
-    api_url = os.getenv("LANGGRAPH_API_URL", "http://localhost:8000")
+    api_url = os.getenv("BACKEND_BASE_URL", "http://localhost:8080")
     try:
         resp = requests.post(f"{api_url}/agents/{agent_id}/invoke", json=payload, timeout=30)
         data = resp.json()
@@ -33,7 +33,7 @@ def call_agent(agent_id: str, payload: dict):
 if st.button("🚀 Execute"):
     if user_query.strip():
         if selected_agent == "CEO-DT":
-            payload = {"question": user_query}
+            payload = {"input": {"query": user_query}}
             agent_id = "ceo-dt"
         else:
             payload = {"input": user_query, "agent_type": selected_agent}

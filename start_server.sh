@@ -9,5 +9,5 @@ if [ -f .env ]; then
 fi
 
 # Run with uvicorn. If this script is not executable, use:
-#   python -m uvicorn server:app --host 0.0.0.0 --port ${PORT:-8000}
-python -m uvicorn server:app --host 0.0.0.0 --port "${PORT:-8000}"
+#   python -m uvicorn server:app --host 0.0.0.0 --port ${PORT:-8080}
+python -m uvicorn server:app --host 0.0.0.0 --port "${PORT:-8080}"

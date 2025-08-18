@@ -9,7 +9,7 @@ from fastapi.responses import JSONResponse
 app = FastAPI(title="Green Hill Cockpit API", version="0.1.0")
 
 # CORS configuration
-origins = [o.strip() for o in os.getenv("CORS_ORIGINS", "").split(",") if o.strip()]
+origins = [o.strip() for o in os.getenv("CORS_ALLOW_ORIGINS", "").split(",") if o.strip()]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins or ["*"],
@@ -18,8 +18,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-PROXY_BASE_URL = os.getenv("LANGGRAPH_BASE_URL")
-if PROXY_BASE_URL:
+LANGGRAPH_BASE_URL = os.getenv("LANGGRAPH_BASE_URL")
+if LANGGRAPH_BASE_URL:
     from ghc_dt.adapters import langgraph_client as lg_client
 else:
     from ghc_dt import registry
@@ -37,7 +37,7 @@ async def version() -> Dict[str, str]:
 
 @app.get("/graphs")
 async def graphs() -> Dict[str, Any]:
-    if PROXY_BASE_URL:
+    if LANGGRAPH_BASE_URL:
         graph_list = await lg_client.list_graphs()
     else:
         graph_list = registry.list_graphs()
@@ -47,7 +47,7 @@ async def graphs() -> Dict[str, Any]:
 @app.post("/agents/{agent_id}/invoke")
 async def invoke_agent(agent_id: str, payload: Dict[str, Any] = Body(...)) -> JSONResponse:
     try:
-        if PROXY_BASE_URL:
+        if LANGGRAPH_BASE_URL:
             result = await lg_client.invoke_graph(agent_id, payload)
         else:
             result = registry.invoke_graph(agent_id, payload)
@@ -61,4 +61,4 @@ async def invoke_agent(agent_id: str, payload: Dict[str, Any] = Body(...)) -> JS
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run("server:app", host="0.0.0.0", port=int(os.getenv("PORT", "8000")))
+    uvicorn.run("server:app", host="0.0.0.0", port=int(os.getenv("PORT", "8080")))
