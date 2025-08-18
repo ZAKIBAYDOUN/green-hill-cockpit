@@ -16,3 +16,4 @@ htmlcov/
 .env
 *.log
 evidence.jsonl
+*.egg-info/

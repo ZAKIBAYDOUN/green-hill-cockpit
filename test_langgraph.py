@@ -16,18 +16,20 @@ def test_langgraph_config():
     print(f"🔗 Graphs: {list(config['graphs'].keys())}")
     
     # Test graph imports
+    import importlib
     for graph_name, graph_path in config['graphs'].items():
         module_path, graph_attr = graph_path.split(':')
         module_path = module_path.replace('./', '').replace('.py', '')
-        
+
         try:
-            module = __import__(module_path)
+            module = importlib.import_module(module_path)
             graph = getattr(module, graph_attr)
             print(f"✅ {graph_name}: {type(graph)}")
         except Exception as e:
             print(f"❌ {graph_name}: {e}")
     
     print("\n🎯 LangGraph configuration is ready!")
+
 
 if __name__ == "__main__":
     test_langgraph_config()

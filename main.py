@@ -14,7 +14,7 @@ def call_agent(state: State):
         return {"messages": [{"role": "assistant", "content": "No messages to process"}]}
     last_message = messages[-1]["content"]
     if agent == "ghc_dt":
-        from agents.ghc_dt import run_ghc_dt
+        from ghc_dt.ghc_dt_agent import run_ghc_dt
         result = run_ghc_dt(last_message, state)
         return {"messages": [{"role": "assistant", "content": result["answer"]}]}
     else:

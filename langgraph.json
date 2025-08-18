@@ -1,14 +1,16 @@
 {
   "python_version": "3.11",
+  "image_distro": "wolfi",
   "dependencies": [
+    "./",
     "langgraph>=0.2.0",
     "langchain-core>=0.3.0",
-    "langchain-openai>=0.2.0", 
+    "langchain-openai>=0.2.0",
     "openai>=1.14.0",
     "typing-extensions>=4.8.0"
   ],
   "graphs": {
-    "agent": "./agent.py:graph",
-    "ghc_dt": "./ghc_dt_agent.py:ghc_dt_graph"
+    "agent": "ghc_dt.agent:graph",
+    "ghc_dt": "ghc_dt.ghc_dt_agent:ghc_dt_graph"
   }
 }
