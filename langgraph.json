@@ -1,13 +1,15 @@
 {
-  "graphs": {
-    "green_hill_cockpit": "./main.py:app"
-  },
   "python_version": "3.11",
   "dependencies": [
     "streamlit",
-    "openai",
+    "openai>=1.0.0",
     "requests",
-    "langgraph",
-    "langchain"
-  ]
+    "langgraph>=0.2.0",
+    "langchain>=0.2.0",
+    "langchain-openai"
+  ],
+  "graphs": {
+    "green_hill_agent": "./agent.py:graph"
+  },
+  "env": ".env.example"
 }
