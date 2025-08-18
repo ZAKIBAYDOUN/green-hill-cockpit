@@ -1,15 +1,8 @@
 {
-  "python_version": "3.11",
   "dependencies": [
-    "langgraph>=0.2.0",
-    "langchain-core>=0.3.0", 
-    "langchain-openai>=0.2.0",
-    "openai>=1.14.0",
-    "./agent.py",
-    "./ghc_dt_agent.py"
+    "langgraph>=0.2.0"
   ],
   "graphs": {
-    "agent": "./agent.py:graph",
-    "ceo-dt": "./ghc_dt_agent.py:ghc_dt_graph"
+    "agent": "./simple_agent.py:graph"
   }
 }
