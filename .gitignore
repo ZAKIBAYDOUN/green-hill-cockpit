@@ -19,3 +19,11 @@ evidence.jsonl.streamlit/secrets.toml
 .env*
 .secrets.local
 Untitled-1
+
+# Security - Never commit secrets
+.secrets*
+secrets.*
+*secrets.toml
+*.key
+*.pem
+.env*
