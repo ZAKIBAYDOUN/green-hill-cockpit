@@ -1,12 +1,8 @@
 {
   "dependencies": [
-    "langgraph>=0.2.0",
-    "langchain-core>=0.3.0", 
-    "langchain-openai>=0.2.0",
-    "openai>=1.14.0"
+    "langgraph>=0.2.0"
   ],
   "graphs": {
-    "ceo-dt": "./ghc_dt.py:graph",
-    "agent": "./agent.py:graph"
+    "agent": "./simple_agent.py:graph"
   }
 }
