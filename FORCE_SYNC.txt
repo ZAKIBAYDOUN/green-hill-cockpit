@@ -1,0 +1,10 @@
+# Force LangGraph Cloud Sync
+
+This commit forces LangGraph Cloud to use the latest code with minimal configuration.
+
+Current minimal setup:
+- Only langgraph>=0.2.0 dependency  
+- Single simple_agent.py with basic graph
+- No external dependencies to avoid build conflicts
+
+Build timestamp: Mon Aug 18 23:59:22 UTC 2025
