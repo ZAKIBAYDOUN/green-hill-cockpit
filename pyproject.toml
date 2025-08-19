@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "green-hill-cockpit"
+version = "0.1.0"
+description = "Green Hill Cockpit LangGraph project"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "langgraph",
+    "langchain-core",
+    "langchain-openai",
+    "openai>=1.14",
+    "fastapi",
+    "uvicorn",
+    "requests",
+]
+
+[tool.setuptools]
+py-modules = ["ghc_dt", "ghc_dt_agent", "agent", "server", "simple_agent"]
