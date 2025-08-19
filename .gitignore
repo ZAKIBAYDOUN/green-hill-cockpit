@@ -17,3 +17,5 @@ htmlcov/
 *.log
 evidence.jsonl.streamlit/secrets.toml
 .env*
+.secrets.local
+Untitled-1
