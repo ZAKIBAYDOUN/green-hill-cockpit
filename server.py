@@ -1,120 +1,59 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Optional, Dict, Any
-from importlib.metadata import PackageNotFoundError, version
 import os
 import uvicorn
 
-# Import agents
-from agent import graph as green_hill_graph
-from ghc_dt_agent import run_ghc_dt
+# Import only the simple agent for now
+from simple_agent import graph as simple_graph
 
 app = FastAPI(title="Green Hill LangGraph API", version="1.0.0")
 
 MODE = os.getenv("MODE", "local")
 
-try:
-    SERVICE_VERSION = version("green-hill-cockpit")
-except PackageNotFoundError:
-    SERVICE_VERSION = "0.0.0"
-
-
 class InvokeRequest(BaseModel):
-    question: str
-    state: Optional[Dict[str, Any]] = None
-
-
-class InvokeResponse(BaseModel):
-    answer: str
-    agent: str
-    status: str
-    meta: Optional[Dict[str, Any]] = None
-
-
-class CeoDTInvokeRequest(BaseModel):
     input: Dict[str, Any]
-
 
 @app.get("/health")
 async def health_check():
-    """Health check endpoint"""
     return {"status": "ok", "mode": MODE}
-
 
 @app.get("/ready")
 async def ready_check():
-    """Readiness probe"""
     return {"status": "ok", "mode": MODE}
-
 
 @app.get("/version")
 async def version_route():
-    """Service version info"""
-    return {"service": "green-hill-cockpit", "version": SERVICE_VERSION, "mode": MODE}
-
+    return {"service": "green-hill-cockpit", "version": "1.0.0", "mode": MODE}
 
 @app.get("/graphs")
 async def graphs_route():
-    """List available graphs"""
-    return {"graphs": ["ceo-dt"]}
+    return {"graphs": ["agent"]}
 
+@app.post("/assistants/agent/threads")
+async def create_thread(request: InvokeRequest = None):
+    return {"thread_id": "thread_123"}
 
-@app.post("/agents/ceo-dt/invoke")
-async def invoke_ceo_dt(request: CeoDTInvokeRequest):
-    """Invoke the CEO Digital Twin agent"""
-    query = request.input.get("query", "")
+@app.post("/threads/{thread_id}/runs")
+async def create_run(thread_id: str, request: InvokeRequest):
     try:
-        result = run_ghc_dt(query, request.input)
-        return {"agent": "ceo-dt", "data": {"answer": result["answer"]}}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error invoking ceo-dt agent: {e}")
-
-
-@app.post("/agents/ghc_dt/invoke", response_model=InvokeResponse)
-async def invoke_ghc_dt_legacy(request: InvokeRequest):
-    """Invoke the GHC-DT agent (legacy endpoint)"""
-    try:
-        result = run_ghc_dt(request.question, request.state)
-        return InvokeResponse(
-            answer=result["answer"],
-            agent="ghc_dt",
-            status="ok",
-            meta=result.get("meta", {})
-        )
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error invoking GHC-DT agent: {e}")
-
-
-@app.post("/agents/green_hill/invoke", response_model=InvokeResponse)
-async def invoke_green_hill(request: InvokeRequest):
-    """Invoke the original Green Hill agent"""
-    try:
-        state = {
-            "input": request.question,
-            "output": "",
-            "agent_type": request.state.get("agent_type", "Strategy") if request.state else "Strategy"
+        input_text = ""
+        if "input" in request.input and "messages" in request.input["input"]:
+            input_text = request.input["input"]["messages"][0]["content"]
+        elif "messages" in request.input:
+            input_text = request.input["messages"][0]["content"]
+        
+        state = {"input": input_text, "output": ""}
+        result = simple_graph.invoke(state)
+        
+        return {
+            "run_id": "run_123",
+            "status": "success",
+            "output": result["output"]
         }
-        result = green_hill_graph.invoke(state)
-        return InvokeResponse(
-            answer=result["output"],
-            agent="green_hill",
-            status="ok",
-            meta={"agent_type": result.get("agent_type", "Strategy")}
-        )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error invoking Green Hill agent: {e}")
-
-
-@app.post("/invoke")
-async def generic_invoke(request: InvokeRequest):
-    """Generic invoke endpoint that routes to specific agents based on state"""
-    agent_type = request.state.get("agent") if request.state else "green_hill"
-    if agent_type == "ghc_dt":
-        return await invoke_ghc_dt_legacy(request)
-    else:
-        return await invoke_green_hill(request)
-
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", "8000"))
+    port = int(os.getenv("PORT", "8080"))
     uvicorn.run(app, host="0.0.0.0", port=port)
