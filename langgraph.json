@@ -1,6 +1,7 @@
 {
   "dependencies": [
-    "langgraph>=0.2.0"
+    "langgraph>=0.2.0",
+    "./simple_agent.py"
   ],
   "graphs": {
     "agent": "./simple_agent.py:graph"
