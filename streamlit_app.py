@@ -125,6 +125,12 @@ LANG = {
 
 # Environment setup - bridge st.secrets to os.environ
 def setup_environment():
+# Debug: Print if secrets are loaded
+if "LANGGRAPH_API_KEY" in os.environ:
+    print(f"✅ API Key loaded: {os.environ[LANGGRAPH_API_KEY][:10]}...")
+else:
+    print("❌ API Key NOT loaded from environment")
+    """Bridge Streamlit secrets to environment variables"""
     """Bridge Streamlit secrets to environment variables"""
     secret_keys = ["LANGGRAPH_API_URL", "LANGGRAPH_API_KEY", "OPENAI_API_KEY", 
                    "DEMO_MODE", "GHC_DT_MODEL", "GHC_DT_TEMPERATURE", "GHC_DT_EVIDENCE_LOG"]
@@ -132,11 +138,19 @@ def setup_environment():
     for key in secret_keys:
         try:
             if key in st.secrets:
+
+# Call setup_environment immediately
+setup_environment()
                 os.environ[key] = st.secrets[key]
         except:
             pass  # Use existing env var or default
 
 setup_environment()
+# Debug: Print if secrets are loaded
+if "LANGGRAPH_API_KEY" in os.environ:
+    print(f"✅ API Key loaded: {os.environ[LANGGRAPH_API_KEY][:10]}...")
+else:
+    print("❌ API Key NOT loaded from environment")
 
 # Configuration
 LANGGRAPH_API_URL = os.getenv("LANGGRAPH_API_URL", "https://cockpit-c5fbf013b8495301890e442307c38955.us.langgraph.app").rstrip('/')
