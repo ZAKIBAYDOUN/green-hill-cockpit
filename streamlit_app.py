@@ -27,6 +27,16 @@ AGENTS = {
     "innovation": "Innovation Advisor",
     "code": "Code Assistant"
 }
+# Command definitions
+COMMANDS = {
+    "analyze": "Analyze current situation",
+    "recommend": "Get recommendations",
+    "forecast": "Generate forecasts",
+    "report": "Generate report",
+    "simulate": "Run simulation",
+    "optimize": "Optimize strategy"
+}
+
 
 # Agent configurations
 AGENTS = {
@@ -40,6 +50,16 @@ AGENTS = {
     "innovation": "Innovation Advisor",
     "code": "Code Assistant"
 }
+# Command definitions
+COMMANDS = {
+    "analyze": "Analyze current situation",
+    "recommend": "Get recommendations",
+    "forecast": "Generate forecasts",
+    "report": "Generate report",
+    "simulate": "Run simulation",
+    "optimize": "Optimize strategy"
+}
+
 
 # Agent configurations
 AGENTS = {
@@ -53,6 +73,16 @@ AGENTS = {
     "innovation": "Innovation Advisor",
     "code": "Code Assistant"
 }
+# Command definitions
+COMMANDS = {
+    "analyze": "Analyze current situation",
+    "recommend": "Get recommendations",
+    "forecast": "Generate forecasts",
+    "report": "Generate report",
+    "simulate": "Run simulation",
+    "optimize": "Optimize strategy"
+}
+
 
 # Page config
 st.set_page_config(
