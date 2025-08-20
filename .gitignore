@@ -27,3 +27,11 @@ secrets.*
 *.key
 *.pem
 .env*
+
+# Security - Never commit secrets
+.secrets*
+secrets.*
+*secrets.toml
+*.key
+*.pem
+.env*
