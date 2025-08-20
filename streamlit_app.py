@@ -12,6 +12,48 @@ from datetime import datetime
 from typing import Dict, Any, Optional, Tuple, List
 import time
 
+
+
+
+# Agent configurations
+AGENTS = {
+    "ghc_dt": "CEO Digital Twin",
+    "strategy": "Strategy Advisor",
+    "finance": "Finance Advisor",
+    "operations": "Operations Advisor", 
+    "market": "Market Advisor",
+    "risk": "Risk Advisor",
+    "compliance": "Compliance Advisor",
+    "innovation": "Innovation Advisor",
+    "code": "Code Assistant"
+}
+
+# Agent configurations
+AGENTS = {
+    "ghc_dt": "CEO Digital Twin",
+    "strategy": "Strategy Advisor",
+    "finance": "Finance Advisor",
+    "operations": "Operations Advisor", 
+    "market": "Market Advisor",
+    "risk": "Risk Advisor",
+    "compliance": "Compliance Advisor",
+    "innovation": "Innovation Advisor",
+    "code": "Code Assistant"
+}
+
+# Agent configurations
+AGENTS = {
+    "ghc_dt": "CEO Digital Twin",
+    "strategy": "Strategy Advisor",
+    "finance": "Finance Advisor",
+    "operations": "Operations Advisor", 
+    "market": "Market Advisor",
+    "risk": "Risk Advisor",
+    "compliance": "Compliance Advisor",
+    "innovation": "Innovation Advisor",
+    "code": "Code Assistant"
+}
+
 # Page config
 st.set_page_config(
     page_title="Green Hill Cockpit",
@@ -124,7 +166,20 @@ LANG = {
 }
 
 # Environment setup - bridge st.secrets to os.environ
-def setup_environment():
+def setup_environment()
+# Agent definitions
+AGENTS = {
+    "ghc_dt": "CEO Digital Twin",
+    "strategy": "Strategy Advisor",
+    "finance": "Finance Advisor", 
+    "operations": "Operations Advisor",
+    "market": "Market Advisor",
+    "risk": "Risk Advisor",
+    "compliance": "Compliance Advisor",
+    "innovation": "Innovation Advisor",
+    "code": "Code Assistant"
+}
+:
     """Bridge Streamlit secrets to environment variables"""
     secret_keys = ["LANGGRAPH_API_URL", "LANGGRAPH_API_KEY", "OPENAI_API_KEY", 
                    "DEMO_MODE", "GHC_DT_MODEL", "GHC_DT_TEMPERATURE", "GHC_DT_EVIDENCE_LOG"]
