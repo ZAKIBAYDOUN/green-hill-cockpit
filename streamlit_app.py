@@ -162,7 +162,7 @@ def setup_environment():
 setup_environment()
 
 # API Configuration from environment variables
-LANGGRAPH_API_URL = os.getenv("LANGGRAPH_API_URL", "https://243a8593-9c11-47ea-b164-4959510bb2de.us.langgraph.app")
+LANGGRAPH_API_URL = os.getenv("LANGGRAPH_API_URL", "https://cockpit-c5fbf013b8495301890e442307c38955.us.langgraph.app")
 LANGGRAPH_API_KEY = os.getenv("LANGGRAPH_API_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 DEMO_MODE = os.getenv("DEMO_MODE", "false").lower() == "true"
