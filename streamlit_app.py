@@ -135,54 +135,6 @@ def setup_environment():
                 os.environ[key] = st.secrets[key]
         except:
             pass  # Use existing env var or default
-
-setup_environment()
-                os.environ[key] = st.secrets[key]
-        except:
-            pass  # Use existing env var or default
-
-setup_environment()
-# Debug: Print if secrets are loaded
-if "LANGGRAPH_API_KEY" in os.environ:
-    print(f"✅ API Key loaded: {os.environ[LANGGRAPH_API_KEY][:10]}...")
-else:
-    print("❌ API Key NOT loaded from environment")
-
-# Configuration
-LANGGRAPH_API_URL = os.getenv("LANGGRAPH_API_URL", "https://cockpit-c5fbf013b8495301890e442307c38955.us.langgraph.app").rstrip('/')
-LANGGRAPH_API_KEY = os.getenv("LANGGRAPH_API_KEY")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-DEMO_MODE = os.getenv("DEMO_MODE", "false").lower() == "true"
-
-# Agent registry
-AGENTS = {
-    "CEO-DT": "ghc_dt",
-    "Strategy": "strategy",
-    "Finance": "finance",
-    "Operations": "operations",
-    "Market": "market",
-    "Risk": "risk",
-    "Compliance": "compliance",
-    "Innovation": "innovation",
-    "Code": "code"
-}
-
-# Commands
-COMMANDS = {
-    "/brief": "Provide a brief overview",
-    "/deep": "Deep dive analysis",
-    "/action": "Actionable recommendations",
-    "/sync": "Synchronize state across agents",
-    "/evidence": "Show evidence trail",
-    "/console": "Console/debug mode",
-    "/research": "Research and analyze"
-}
-
-# State files
-STATE_FILE = "state.json"
-EVIDENCE_FILE = "evidence.jsonl"
-
-# State management functions
 def load_state() -> Dict[str, Any]:
     """Load system state from file"""
     default_state = {
