@@ -1,0 +1,12 @@
+README.md
+agent.py
+ghc_dt.py
+ghc_dt_agent.py
+pyproject.toml
+server.py
+simple_agent.py
+green_hill_cockpit.egg-info/PKG-INFO
+green_hill_cockpit.egg-info/SOURCES.txt
+green_hill_cockpit.egg-info/dependency_links.txt
+green_hill_cockpit.egg-info/requires.txt
+green_hill_cockpit.egg-info/top_level.txt

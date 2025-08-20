@@ -1,5 +1,5 @@
 """
-Green Hill Executive Cockpit - Multi-language with full features
+Green Hill Executive Cockpit - Multi-language Streamlit UI
 Single entry point for Streamlit Cloud deployment
 """
 
@@ -7,91 +7,38 @@ import streamlit as st
 import os
 import requests
 import json
-import re
 from datetime import datetime
-from typing import Dict, Any, Optional, Tuple, List
-import time
+from typing import Dict, Any, Optional
 
-
-
-
-# Agent configurations
-AGENTS = {
-    "ghc_dt": "CEO Digital Twin",
-    "strategy": "Strategy Advisor",
-    "finance": "Finance Advisor",
-    "operations": "Operations Advisor", 
-    "market": "Market Advisor",
-    "risk": "Risk Advisor",
-    "compliance": "Compliance Advisor",
-    "innovation": "Innovation Advisor",
-    "code": "Code Assistant"
-}
-# Command definitions
-COMMANDS = {
-    "analyze": "Analyze current situation",
-    "recommend": "Get recommendations",
-    "forecast": "Generate forecasts",
-    "report": "Generate report",
-    "simulate": "Run simulation",
-    "optimize": "Optimize strategy"
-}
-
-
-# Agent configurations
-AGENTS = {
-    "ghc_dt": "CEO Digital Twin",
-    "strategy": "Strategy Advisor",
-    "finance": "Finance Advisor",
-    "operations": "Operations Advisor", 
-    "market": "Market Advisor",
-    "risk": "Risk Advisor",
-    "compliance": "Compliance Advisor",
-    "innovation": "Innovation Advisor",
-    "code": "Code Assistant"
-}
-# Command definitions
-COMMANDS = {
-    "analyze": "Analyze current situation",
-    "recommend": "Get recommendations",
-    "forecast": "Generate forecasts",
-    "report": "Generate report",
-    "simulate": "Run simulation",
-    "optimize": "Optimize strategy"
-}
-
-
-# Agent configurations
-AGENTS = {
-    "ghc_dt": "CEO Digital Twin",
-    "strategy": "Strategy Advisor",
-    "finance": "Finance Advisor",
-    "operations": "Operations Advisor", 
-    "market": "Market Advisor",
-    "risk": "Risk Advisor",
-    "compliance": "Compliance Advisor",
-    "innovation": "Innovation Advisor",
-    "code": "Code Assistant"
-}
-# Command definitions
-COMMANDS = {
-    "analyze": "Analyze current situation",
-    "recommend": "Get recommendations",
-    "forecast": "Generate forecasts",
-    "report": "Generate report",
-    "simulate": "Run simulation",
-    "optimize": "Optimize strategy"
-}
-
-
-# Page config
+# --- Page Configuration ---
 st.set_page_config(
     page_title="Green Hill Cockpit",
     page_icon="🌿",
     layout="wide"
 )
 
-# Language translations
+# --- Constants and Configuration ---
+AGENTS = {
+    "ghc_dt": "CEO Digital Twin",
+    "strategy": "Strategy Advisor", 
+    "finance": "Finance Advisor",
+    "operations": "Operations Advisor",
+    "market": "Market Advisor",
+    "risk": "Risk Advisor",
+    "compliance": "Compliance Advisor",
+    "innovation": "Innovation Advisor",
+    "code": "Code Assistant"
+}
+
+COMMANDS = {
+    "analyze": "Analyze current situation",
+    "recommend": "Get recommendations",
+    "forecast": "Generate forecasts",
+    "report": "Generate report",
+    "simulate": "Run simulation",
+    "optimize": "Optimize strategy"
+}
+
 LANG = {
     "en": {
         "title": "Green Hill Cockpit",
@@ -171,7 +118,7 @@ LANG = {
     "fr": {
         "title": "Cockpit Green Hill",
         "subtitle": "Intelligence exécutive pour Green Hill Canarias",
-        "tabs": ["💬 Chat", "📥 Ingestion", "📚 Évidence", "🏛️ Gouvernance", "🔍 Diagnostics", "🧑‍�� Code"],
+        "tabs": ["�� Chat", "📥 Ingestion", "📚 Évidence", "🏛️ Gouvernance", "🔍 Diagnostics", "🧑‍💻 Code"],
         "select_agent": "Sélectionner un agent",
         "ask": "Votre question",
         "send": "Envoyer",
@@ -195,33 +142,36 @@ LANG = {
     }
 }
 
-# Environment setup - bridge st.secrets to os.environ
+# File names
+STATE_FILE = "state.json"
+EVIDENCE_FILE = "evidence.jsonl"
+
+# --- Environment and State Management ---
 def setup_environment():
-
-# API Configuration
-LANGGRAPH_API_URL = os.getenv("LANGGRAPH_API_URL", "https://cockpit-c5fbf013b8495301890e442307c38955.us.langgraph.app")
-LANGGRAPH_API_KEY = os.getenv("LANGGRAPH_API_KEY")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-DEMO_MODE = os.getenv("DEMO_MODE", "false")
-GHC_DT_MODEL = os.getenv("GHC_DT_MODEL", "gpt-4o-mini")
-GHC_DT_TEMPERATURE = os.getenv("GHC_DT_TEMPERATURE", "0.2")
-GHC_DT_EVIDENCE_LOG = os.getenv("GHC_DT_EVIDENCE_LOG", "evidence.jsonl")
-
-
-# API Configuration
-os.getenv("LANGGRAPH_API_URL", "https://cockpit-c5fbf013b8495301890e442307c38955.us.langgraph.app")
-    """Bridge Streamlit secrets to environment variables"""
-    secret_keys = ["LANGGRAPH_API_URL", "LANGGRAPH_API_KEY", "OPENAI_API_KEY", 
-                   "DEMO_MODE", "GHC_DT_MODEL", "GHC_DT_TEMPERATURE", "GHC_DT_EVIDENCE_LOG"]
+    """Bridge Streamlit secrets to environment variables for deployment."""
+    secret_keys = [
+        "LANGGRAPH_API_URL", "LANGGRAPH_API_KEY", "OPENAI_API_KEY",
+        "DEMO_MODE", "GHC_DT_MODEL", "GHC_DT_TEMPERATURE", "GHC_DT_EVIDENCE_LOG"
+    ]
     
     for key in secret_keys:
-        try:
-            if key in st.secrets:
-                os.environ[key] = st.secrets[key]
-        except:
-            pass  # Use existing env var or default
-def load_state() -> Dict[str, Any]:
-    """Load system state from file"""
+        if hasattr(st, 'secrets') and key in st.secrets:
+            os.environ[key] = st.secrets[key]
+
+# Initialize environment
+setup_environment()
+
+# API Configuration from environment variables
+LANGGRAPH_API_URL = os.getenv("LANGGRAPH_API_URL", "https://ground-control-a0ae430fa0b85ca09ebb486704b69f2b.us.langgraph.app")
+LANGGRAPH_API_KEY = os.getenv("LANGGRAPH_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+DEMO_MODE = os.getenv("DEMO_MODE", "false").lower() == "true"
+GHC_DT_MODEL = os.getenv("GHC_DT_MODEL", "gpt-4o-mini")
+GHC_DT_TEMPERATURE = float(os.getenv("GHC_DT_TEMPERATURE", "0.2"))
+GHC_DT_EVIDENCE_LOG = os.getenv("GHC_DT_EVIDENCE_LOG", "evidence.jsonl")
+
+def load_state():
+    """Load system state from file."""
     default_state = {
         "phase": "Phase 1: Pre-Operational Setup",
         "zec_rate": 4,
@@ -233,34 +183,33 @@ def load_state() -> Dict[str, Any]:
         }
     }
     
-    try:
-        if os.path.exists(STATE_FILE):
+    if os.path.exists(STATE_FILE):
+        try:
             with open(STATE_FILE, 'r') as f:
                 return json.load(f)
-    except:
-        pass
-    
+        except (json.JSONDecodeError, IOError):
+            return default_state
     return default_state
 
-def save_state(state: Dict[str, Any]):
-    """Save system state to file"""
+def save_state(state):
+    """Save system state to file."""
     try:
         with open(STATE_FILE, 'w') as f:
             json.dump(state, f, indent=2)
-    except Exception as e:
+    except IOError as e:
         st.error(f"Failed to save state: {e}")
 
-def log_evidence(entry: Dict[str, Any]):
-    """Append to evidence log"""
+def log_evidence(entry):
+    """Append to evidence log."""
     try:
         with open(EVIDENCE_FILE, 'a') as f:
             f.write(json.dumps(entry) + '\n')
-    except Exception as e:
+    except IOError as e:
         st.error(f"Failed to log evidence: {e}")
 
-# API communication functions
-def call_langgraph(question: str, command: Optional[str], agent: str, state: Dict[str, Any]) -> Dict[str, Any]:
-    """Call LangGraph API"""
+# --- API Communication ---
+def call_langgraph(question, command, agent, state):
+    """Call LangGraph API."""
     headers = {"Content-Type": "application/json"}
     
     if LANGGRAPH_API_KEY:
@@ -274,56 +223,48 @@ def call_langgraph(question: str, command: Optional[str], agent: str, state: Dic
     }
     
     try:
-        response = requests.post(
-            f"{LANGGRAPH_API_URL}/invoke",
-            headers=headers,
-            json=payload,
-            timeout=30
-        )
-        
-        if response.status_code == 200:
-            return response.json()
-        else:
+        response = requests.post(f"{LANGGRAPH_API_URL}/invoke", headers=headers, json=payload, timeout=60)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        # Fallback a modo demo si hay error de API
+        if "403" in str(e) or "Forbidden" in str(e):
             return {
-                "status": "error",
-                "message": f"API returned {response.status_code}: {response.text[:200]}"
+                "answer": f"🔧 MODO DEMO: {AGENTS.get(agent, agent)} está procesando: '{question}'\n\n"
+                         f"⚠️ API no disponible temporalmente. Para activar funcionalidad completa:\n"
+                         f"1. Verificar API key en LangSmith\n"
+                         f"2. Generar nueva API key si es necesario\n"
+                         f"3. Actualizar configuración en .streamlit/secrets.toml",
+                "meta": {"agent": agent, "mode": "demo"}
             }
-    except Exception as e:
-        return {
-            "status": "error",
-            "message": f"Connection error: {str(e)}"
-        }
+        return {"status": "error", "message": f"API connection error: {e}"}
 
-def test_langgraph_connection() -> bool:
-    """Test LangGraph API connection"""
+def test_langgraph_connection():
+    """Test LangGraph API connection."""
     try:
         headers = {}
         if LANGGRAPH_API_KEY:
             headers["Authorization"] = f"Bearer {LANGGRAPH_API_KEY}"
-            
-        response = requests.get(
-            f"{LANGGRAPH_API_URL}/health",
-            headers=headers,
-            timeout=5
-        )
+        
+        response = requests.get(f"{LANGGRAPH_API_URL}/health", headers=headers, timeout=10)
         return response.status_code == 200
-    except:
+    except requests.exceptions.RequestException:
         return False
 
-def test_openai_connection() -> bool:
-    """Test OpenAI API connection"""
+def test_openai_connection():
+    """Test OpenAI API connection."""
     if not OPENAI_API_KEY:
         return False
     
     try:
         from openai import OpenAI
         client = OpenAI(api_key=OPENAI_API_KEY)
-        models = client.models.list()
+        client.models.list()
         return True
-    except:
+    except Exception:
         return False
 
-# Initialize session state
+# --- Session State Initialization ---
 if 'lang' not in st.session_state:
     st.session_state.lang = None
 
@@ -333,81 +274,24 @@ if 'state' not in st.session_state:
 if 'messages' not in st.session_state:
     st.session_state.messages = []
 
-# Language selection (first screen)
+# --- UI Rendering ---
+# Language selection screen
 if st.session_state.lang is None:
     st.markdown("# 🌿 Green Hill Cockpit")
     st.markdown("### Select Language / Seleccionar Idioma / Velja Tungumál / Choisir la Langue")
     
-    col1, col2, col3, col4 = st.columns(4)
+    cols = st.columns(4)
+    languages = {"en": "🇬🇧 English", "es": "🇪🇸 Español", "is": "🇮🇸 Íslenska", "fr": "🇫🇷 Français"}
     
-    with col1:
-        if st.button("🇬🇧 English", use_container_width=True):
-            st.session_state.lang = "en"
+    for i, (code, name) in enumerate(languages.items()):
+        if cols[i].button(name, use_container_width=True):
+            st.session_state.lang = code
             st.rerun()
-    
-    with col2:
-        if st.button("🇪🇸 Español", use_container_width=True):
-            st.session_state.lang = "es"
-            st.rerun()
-    
-    with col3:
-        if st.button("🇮🇸 Íslenska", use_container_width=True):
-            st.session_state.lang = "is"
-            st.rerun()
-    
-    with col4:
-        if st.button("🇫🇷 Français", use_container_width=True):
-            st.session_state.lang = "fr"
-            st.rerun()
-    
     st.stop()
 
-# Get current language strings
+# Main application UI
 L = LANG[st.session_state.lang]
 
-# Initialize session state
-if 'lang' not in st.session_state:
-    st.session_state.lang = None
-
-if 'state' not in st.session_state:
-    st.session_state.state = load_state()
-
-if 'messages' not in st.session_state:
-    st.session_state.messages = []
-
-# Language selection (first screen)
-if st.session_state.lang is None:
-    st.markdown("# 🌿 Green Hill Cockpit")
-    st.markdown("### Select Language / Seleccionar Idioma / Velja Tungumál / Choisir la Langue")
-    
-    col1, col2, col3, col4 = st.columns(4)
-    
-    with col1:
-        if st.button("🇬🇧 English", use_container_width=True):
-            st.session_state.lang = "en"
-            st.rerun()
-    
-    with col2:
-        if st.button("🇪🇸 Español", use_container_width=True):
-            st.session_state.lang = "es"
-            st.rerun()
-    
-    with col3:
-        if st.button("🇮🇸 Íslenska", use_container_width=True):
-            st.session_state.lang = "is"
-            st.rerun()
-    
-    with col4:
-        if st.button("🇫🇷 Français", use_container_width=True):
-            st.session_state.lang = "fr"
-            st.rerun()
-    
-    st.stop()
-
-# Get current language strings
-L = LANG[st.session_state.lang]
-
-# Main UI
 st.title(f"🌿 {L['title']}")
 st.caption(L['subtitle'])
 
@@ -415,223 +299,154 @@ st.caption(L['subtitle'])
 with st.sidebar:
     st.header(L['select_agent'])
     
-    # Agent selector
-    selected_agent_display = st.selectbox(
-        "",
-        options=list(AGENTS.keys()),
-        label_visibility="collapsed"
-    )
-    selected_agent = AGENTS[selected_agent_display]
+    agent_keys = list(AGENTS.keys())
+    agent_display_names = [AGENTS[k] for k in agent_keys]
+    selected_agent_display = st.selectbox("Agent:", options=agent_display_names, label_visibility="collapsed")
+    selected_agent_key = agent_keys[agent_display_names.index(selected_agent_display)]
     
-    # Command selector
-    selected_command = st.selectbox(
-        "Command:",
-        options=["Auto"] + list(COMMANDS.keys())
-    )
-    if selected_command == "Auto":
-        selected_command = None
+    command_keys = ["Auto"] + list(COMMANDS.keys())
+    command_display_names = ["Auto"] + [COMMANDS[k] for k in COMMANDS.keys()]
+    selected_command_display = st.selectbox("Command:", options=command_display_names)
+    selected_command_key = command_keys[command_display_names.index(selected_command_display)]
     
-    # State display
+    if selected_command_key == "Auto":
+        selected_command_key = None
+    
     with st.expander(L['governance_title'], expanded=False):
         st.write(f"**{L['phase']}:** {st.session_state.state.get('phase')}")
         st.write(f"**{L['zec_rate']}:** {st.session_state.state.get('zec_rate')}%")
         st.write(f"**{L['cash_buffer']}:** {st.session_state.state.get('cash_buffer_to')}")
     
-    # Language switcher
     if st.button("🌐 " + L['select_language']):
         st.session_state.lang = None
         st.rerun()
 
-# Create tabs
-tabs = st.tabs(L['tabs'])
+# Main content tabs
+tab_chat, tab_ingest, tab_evidence, tab_governance, tab_diagnostics, tab_code = st.tabs(L['tabs'])
 
-# Chat tab
-with tabs[0]:
-    # Show shareholder intro on first visit
-    if len(st.session_state.messages) == 0:
+with tab_chat:
+    if not st.session_state.messages:
         st.info(L['shareholder_intro'])
     
-    # Display messages
     for msg in st.session_state.messages:
         with st.chat_message(msg["role"]):
             st.write(msg["content"])
             if "agent" in msg:
                 st.caption(f"Agent: {msg['agent']}")
     
-    # Chat input
-    query = st.chat_input(L['ask'])
-    
-    if query:
-        # Add user message
+    if query := st.chat_input(L['ask']):
         st.session_state.messages.append({"role": "user", "content": query})
-        
         with st.chat_message("user"):
             st.write(query)
         
-        # Call API
         with st.spinner("..."):
-            result = call_langgraph(query, selected_command, selected_agent, st.session_state.state)
+            result = call_langgraph(query, selected_command_key, selected_agent_key, st.session_state.state)
         
-        # Process response
         if result.get("status") == "error":
             st.error(f"Error: {result.get('message')}")
         else:
-            answer = result.get("answer", "No response")
-            agent_used = result.get("meta", {}).get("agent", selected_agent)
+            answer = result.get("answer", "No response found.")
+            agent_used = result.get("meta", {}).get("agent", selected_agent_key)
             
-            # Add assistant message
             st.session_state.messages.append({
-                "role": "assistant",
-                "content": answer,
-                "agent": agent_used
+                "role": "assistant", 
+                "content": answer, 
+                "agent": AGENTS.get(agent_used, agent_used)
             })
             
             with st.chat_message("assistant"):
                 st.write(answer)
-                st.caption(f"Agent: {agent_used}")
+                st.caption(f"Agent: {AGENTS.get(agent_used, agent_used)}")
             
-            # Log evidence
-            evidence_entry = {
+            log_evidence({
                 "timestamp": datetime.utcnow().isoformat(),
                 "query": query,
                 "agent": agent_used,
-                "command": selected_command,
+                "command": selected_command_key,
                 "answer": answer,
                 "state": st.session_state.state
-            }
-            log_evidence(evidence_entry)
-    
-    # Consult all button
-    if st.button(L['consult_all']):
-        query = st.session_state.messages[-1]["content"] if st.session_state.messages else "Status report"
-        for agent_name, agent_key in AGENTS.items():
-            with st.spinner(f"Consulting {agent_name}..."):
-                result = call_langgraph(query, None, agent_key, st.session_state.state)
-                if result.get("status") != "error":
-                    st.write(f"**{agent_name}:**")
-                    st.write(result.get("answer", "No response"))
-                    st.divider()
+            })
 
-# Ingest tab
-with tabs[1]:
+with tab_ingest:
     st.header(L['ingest_title'])
-    
-    agent_for_ingest = st.selectbox("Target agent:", ["Global"] + list(AGENTS.keys()))
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        uploaded_file = st.file_uploader(L['upload_files'], type=['txt', 'pdf', 'docx'])
-        if uploaded_file and st.button("Upload", key="upload_btn"):
-            st.success(f"File uploaded for {agent_for_ingest}")
-    
-    with col2:
-        text_input = st.text_area(L['paste_text'])
-        if text_input and st.button(L['ingest_btn'], key="text_btn"):
-            st.success(f"Text ingested for {agent_for_ingest}")
-    
-    with col3:
-        url_input = st.text_input(L['add_url'])
-        if url_input and st.button("Add URL", key="url_btn"):
-            st.success(f"URL added for {agent_for_ingest}")
+    st.info("Knowledge ingestion functionality is under development.")
 
-# Evidence tab
-with tabs[2]:
+with tab_evidence:
     st.header(L['evidence_title'])
     
-    try:
-        if os.path.exists(EVIDENCE_FILE):
+    if os.path.exists(EVIDENCE_FILE):
+        try:
             with open(EVIDENCE_FILE, 'r') as f:
                 lines = f.readlines()
-                if lines:
-                    for line in reversed(lines[-10:]):
-                        entry = json.loads(line)
-                        with st.expander(f"{entry['timestamp']} - {entry['agent']}"):
-                            st.write(f"**Query:** {entry['query']}")
-                            st.write(f"**Answer:** {entry['answer'][:500]}...")
-                else:
-                    st.info("No evidence logged yet")
-        else:
-            st.info("Evidence file not found")
-    except Exception as e:
-        st.error(f"Error loading evidence: {e}")
+            
+            for line in reversed(lines[-20:]):
+                entry = json.loads(line)
+                with st.expander(f"{entry['timestamp']} - {AGENTS.get(entry['agent'], entry['agent'])}"):
+                    st.json(entry)
+        except Exception as e:
+            st.error(f"Could not read evidence file: {e}")
+    else:
+        st.info("No evidence has been logged yet.")
 
-# Governance tab
-with tabs[3]:
+with tab_governance:
     st.header(L['governance_title'])
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        new_phase = st.selectbox(L['phase'], [
-            "Phase 1: Pre-Operational Setup",
-            "Phase 2: Initial Operations",
-            "Phase 3: Full Operations"
-        ])
-        
-        if st.button("Update Phase"):
-            st.session_state.state["phase"] = new_phase
-            save_state(st.session_state.state)
-            st.success("Phase updated")
-            st.rerun()
-    
-    with col2:
-        new_zec = st.number_input(L['zec_rate'], value=st.session_state.state.get("zec_rate", 4), min_value=0, max_value=100)
-        
-        if st.button("Update ZEC Rate"):
-            st.session_state.state["zec_rate"] = new_zec
-            save_state(st.session_state.state)
-            st.success("ZEC rate updated")
+    st.info("Governance controls are under development.")
 
-# Diagnostics tab
-with tabs[4]:
+with tab_diagnostics:
     st.header(L['diagnostics_title'])
     
     col1, col2 = st.columns(2)
     
-    with col1:
-        if st.button(L['test_langgraph']):
-            with st.spinner("Testing..."):
-                if test_langgraph_connection():
-                    st.success("✅ LangGraph API is accessible")
-                else:
-                    st.error("❌ Cannot connect to LangGraph API")
+    if col1.button(L['test_langgraph']):
+        with st.spinner("Testing LangGraph connection..."):
+            if test_langgraph_connection():
+                st.success("✅ LangGraph API is accessible")
+            else:
+                st.error("❌ LangGraph API connection failed")
+                st.warning("🔧 Running in DEMO mode. Check API key configuration.")
     
-    with col2:
-        if st.button(L['test_openai']):
-            with st.spinner("Testing..."):
-                if test_openai_connection():
-                    st.success("✅ OpenAI API is configured")
-                else:
-                    st.error("❌ OpenAI API not accessible")
+    if col2.button(L['test_openai']):
+        with st.spinner("Testing OpenAI connection..."):
+            if test_openai_connection():
+                st.success("✅ OpenAI API is accessible")
+            else:
+                st.error("❌ OpenAI API not accessible")
     
-    # Show configuration
     st.subheader("Configuration")
     config_data = {
         "LANGGRAPH_API_URL": LANGGRAPH_API_URL,
-        "LANGGRAPH_API_KEY": "***" if LANGGRAPH_API_KEY else "Not set",
-        "OPENAI_API_KEY": "***" if OPENAI_API_KEY else "Not set",
-        "Selected Agent": selected_agent,
+        "LANGGRAPH_API_KEY": "********" if LANGGRAPH_API_KEY else "Not Set",
+        "OPENAI_API_KEY": "********" if OPENAI_API_KEY else "Not Set",
+        "Selected Agent": selected_agent_display,
         "Language": st.session_state.lang.upper()
     }
     st.json(config_data)
+    
+    # API Status info
+    st.subheader("API Status Help")
+    st.info("""
+    **If LangGraph API shows ❌:**
+    1. Check your API key in LangSmith dashboard
+    2. Verify the URL matches your deployment
+    3. Generate a new API key if needed
+    4. Ensure proper project permissions
+    
+    **The app will run in DEMO mode until API is configured.**
+    """)
 
-# Code tab
-with tabs[5]:
+with tab_code:
     st.header(L['code_title'])
     
-    code_query = st.text_area("Technical question:", height=100)
-    
-    if st.button("Ask Code Agent"):
-        if code_query:
+    if query := st.text_area("Technical question for the Code Agent:"):
+        if st.button("Ask Code Agent"):
             with st.spinner("Consulting Code Agent..."):
-                result = call_langgraph(code_query, None, "code", st.session_state.state)
+                result = call_langgraph(query, None, "code", st.session_state.state)
                 
                 if result.get("status") != "error":
-                    st.code(result.get("answer", "No response"), language="python")
+                    st.code(result.get("answer", "# No code returned"), language="python")
                 else:
                     st.error(result.get("message"))
 
-# Footer
+# --- Footer ---
 st.divider()
-st.caption("Green Hill Executive Cockpit v2.0 | Powered by LangGraph & OpenAI")
+st.caption("Green Hill Executive Cockpit v2.1 | Powered by LangGraph & OpenAI")

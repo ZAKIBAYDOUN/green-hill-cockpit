@@ -1,0 +1,22 @@
+-- Create database and schema if not exists
+CREATE DATABASE IF NOT EXISTS GREENHILL_DB;
+CREATE SCHEMA IF NOT EXISTS GREENHILL_DB.REPOSITORIES;
+
+USE DATABASE GREENHILL_DB;
+USE SCHEMA REPOSITORIES;
+
+-- Create the Git repository
+CREATE OR REPLACE GIT REPOSITORY green_hill_cockpit
+    API_INTEGRATION = github_api_integration
+    ORIGIN = 'https://github.com/ZAKIBAYDOUN/green-hill-cockpit'
+    COMMENT = 'Green Hill Cockpit - Ground Control';
+
+-- Fetch the repository
+ALTER GIT REPOSITORY green_hill_cockpit FETCH;
+
+-- Show repository details
+SHOW GIT REPOSITORIES;
+DESC GIT REPOSITORY green_hill_cockpit;
+
+-- List repository branches
+SHOW GIT BRANCHES IN GIT REPOSITORY green_hill_cockpit;

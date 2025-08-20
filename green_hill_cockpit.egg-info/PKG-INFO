@@ -1,0 +1,126 @@
+Metadata-Version: 2.4
+Name: green-hill-cockpit
+Version: 0.1.0
+Summary: Green Hill Cockpit LangGraph project
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: langgraph
+Requires-Dist: langchain-core
+Requires-Dist: langchain-openai
+Requires-Dist: openai>=1.14
+Requires-Dist: fastapi
+Requires-Dist: uvicorn
+Requires-Dist: requests
+
+# Green Hill Cockpit
+
+Green Hill Executive Cockpit with LangGraph-powered agents including GHC-DT (CEO Digital Twin).
+
+## Architecture
+
+- **LangGraph Backend**: LangGraph Cloud service running on port 8080
+- **Streamlit Frontend**: Executive cockpit interface
+- **Agents**:
+  - GHC-DT (CEO Digital Twin): Executive-focused agent using LangChain & OpenAI
+  - Green Hill Agents: Strategy, Finance, Operations, Market, Risk, Compliance, Innovation
+
+## Quick Start
+
+### Environment Setup
+
+1. Copy environment template:
+```bash
+cp .env.example .env
+```
+
+2. Configure required environment variables in `.env`:
+```env
+OPENAI_API_KEY=your_openai_api_key_here
+LANGSMITH_API_KEY=your_langsmith_api_key_here
+
+# GHC-DT Configuration
+GHC_DT_MODEL=gpt-4o-mini
+GHC_DT_TEMPERATURE=0.2
+GHC_DT_SYSTEM_PROMPT=You are GHC-DT, the CEO Digital Twin of Green Hill Canarias...
+GHC_DT_EVIDENCE_LOG=evidence.jsonl
+```
+
+### Cloud Deployment
+
+#### LangGraph Cloud Service
+Deploy to LangGraph Cloud using the `langgraph.json` configuration.
+Service runs on port 8080 with standard endpoints.
+
+#### Streamlit Cloud
+1. Connect your repository to Streamlit Cloud
+2. Configure secrets:
+   - `OPENAI_API_KEY`
+   - `BACKEND_BASE_URL` (your deployed LangGraph service URL)
+   - `LANGGRAPH_API_KEY` (if authentication is enabled)
+
+## API Endpoints
+
+LangGraph service endpoints on port 8080:
+
+- `GET /health` - Health check
+- `GET /ready` - Readiness check
+- `GET /version` - Service version
+- `GET /graphs` - Available graphs
+- `POST /agents/ceo-dt/invoke` - CEO Digital Twin invocation
+
+## Testing
+
+Use the smoke test file:
+```bash
+# Open scripts/smoke_ghc_dt.http in VS Code and run the requests
+# Or use curl:
+curl -X POST http://localhost:8080/agents/ceo-dt/invoke \
+  -H "Content-Type: application/json" \
+  -d '{"input":{"query":"Ping"}}'
+```
+
+## Agents
+
+### GHC-DT (CEO Digital Twin)
+Executive-focused agent providing:
+- Strategic summaries
+- Key points identification  
+- Next action recommendations
+- Executive decision support
+
+### Green Hill Specialists
+Domain experts in:
+- **Strategy**: EU-GMP compliance, market expansion
+- **Finance**: CAPEX, ROI projections
+- **Operations**: Production planning, facility management
+- **Market**: European cannabis opportunities
+- **Risk**: Regulatory and operational risks
+- **Compliance**: AEMPS, EU-GMP requirements
+- **Innovation**: R&D, technology advancement
+
+## Runbook
+
+### Deploy to LangGraph Cloud
+1. Push code to main branch
+2. Configure LangGraph Cloud deployment
+3. Set environment variables (OPENAI_API_KEY, etc.)
+4. Wait for deployment to complete
+
+### Deploy Streamlit
+1. Connect repo to Streamlit Cloud
+2. Set BACKEND_BASE_URL to your LangGraph service URL
+3. Configure additional secrets as needed
+
+### Smoke Test
+```bash
+# Health check
+curl http://your-service:8080/health
+
+# List graphs
+curl http://your-service:8080/graphs
+
+# Invoke CEO-DT
+curl -X POST http://your-service:8080/agents/ceo-dt/invoke \
+  -H "Content-Type: application/json" \
+  -d '{"input":{"query":"What is the strategic outlook?"}}'
+```

@@ -1,0 +1,299 @@
+{
+  "config": {
+    "DEMO_MODE": "true",
+    "BYPASS_AUTH": "true",
+    "LANGCHAIN_TRACING_V2": "false",
+    "EMERGENCY_MODE": "true",
+    "LOCAL_FALLBACK": "true",
+    "SKIP_GITHUB_ACTIONS": "true"
+  },
+  "discovered_structure": {
+    "discovery_time": "2025-08-20T16:55:47.506475",
+    "organizations": {
+      "parent": {
+        "name": "green-hill-canarias",
+        "id": 226085155,
+        "description": "",
+        "created_at": "2025-08-12T11:09:57Z",
+        "public_repos": 1,
+        "private_repos": 1,
+        "members_count": 1,
+        "teams_count": 1,
+        "repos": [
+          {
+            "name": "demo-repository",
+            "full_name": "green-hill-canarias/demo-repository",
+            "private": true,
+            "created_at": "2025-08-12T11:14:23Z",
+            "updated_at": "2025-08-12T11:14:27Z",
+            "language": "HTML",
+            "has_actions": true,
+            "is_cannabis_app": false
+          },
+          {
+            "name": "digital-roots",
+            "full_name": "green-hill-canarias/digital-roots",
+            "private": false,
+            "created_at": "2025-08-12T11:24:36Z",
+            "updated_at": "2025-08-14T19:05:23Z",
+            "language": null,
+            "has_actions": true,
+            "is_cannabis_app": true
+          },
+          {
+            "name": "ghc-ingest-",
+            "full_name": "green-hill-canarias/ghc-ingest-",
+            "private": true,
+            "created_at": "2025-08-14T19:57:11Z",
+            "updated_at": "2025-08-14T19:57:15Z",
+            "language": null,
+            "has_actions": true,
+            "is_cannabis_app": false
+          }
+        ],
+        "members": [
+          "ZAKIBAYDOUN"
+        ],
+        "teams": [
+          "digital roots"
+        ]
+      },
+      "child": {
+        "name": "digital-roots",
+        "id": 64514497,
+        "description": "",
+        "created_at": "2020-04-29T03:55:33Z",
+        "public_repos": 2,
+        "private_repos": 0,
+        "members_count": 0,
+        "teams_count": 0,
+        "repos": [
+          {
+            "name": "vue-slider",
+            "full_name": "digital-roots/vue-slider",
+            "private": false,
+            "created_at": "2024-04-11T14:51:19Z",
+            "updated_at": "2024-04-24T21:11:03Z",
+            "language": "Vue",
+            "has_actions": true,
+            "is_cannabis_app": false
+          },
+          {
+            "name": "travel-datepicker",
+            "full_name": "digital-roots/travel-datepicker",
+            "private": false,
+            "created_at": "2025-02-07T22:35:43Z",
+            "updated_at": "2025-05-06T15:11:59Z",
+            "language": "Vue",
+            "has_actions": true,
+            "is_cannabis_app": false
+          }
+        ],
+        "members": [],
+        "teams": []
+      }
+    },
+    "user_repos": [
+      {
+        "name": "-gr-site",
+        "full_name": "ZAKIBAYDOUN/-gr-site",
+        "private": false,
+        "created_at": "2025-08-04T11:08:26Z",
+        "updated_at": "2025-08-06T02:12:38Z",
+        "language": "JavaScript",
+        "is_cannabis_app": false
+      },
+      {
+        "name": "digital-roots",
+        "full_name": "ZAKIBAYDOUN/digital-roots",
+        "private": false,
+        "created_at": "2025-08-16T02:46:49Z",
+        "updated_at": "2025-08-20T16:26:40Z",
+        "language": null,
+        "is_cannabis_app": true
+      },
+      {
+        "name": "gr-gpt-agent",
+        "full_name": "ZAKIBAYDOUN/gr-gpt-agent",
+        "private": false,
+        "created_at": "2025-08-02T13:48:32Z",
+        "updated_at": "2025-08-06T02:16:27Z",
+        "language": null,
+        "is_cannabis_app": false
+      },
+      {
+        "name": "gr-website",
+        "full_name": "ZAKIBAYDOUN/gr-website",
+        "private": false,
+        "created_at": "2025-08-03T20:21:50Z",
+        "updated_at": "2025-08-06T02:14:41Z",
+        "language": null,
+        "is_cannabis_app": false
+      },
+      {
+        "name": "green-hill-app",
+        "full_name": "ZAKIBAYDOUN/green-hill-app",
+        "private": false,
+        "created_at": "2025-08-13T19:04:51Z",
+        "updated_at": "2025-08-16T14:15:39Z",
+        "language": "Python",
+        "is_cannabis_app": false
+      },
+      {
+        "name": "green-hill-cockpit",
+        "full_name": "ZAKIBAYDOUN/green-hill-cockpit",
+        "private": false,
+        "created_at": "2025-08-18T05:23:05Z",
+        "updated_at": "2025-08-20T02:33:59Z",
+        "language": "Python",
+        "is_cannabis_app": false
+      },
+      {
+        "name": "greenhiil-full-website",
+        "full_name": "ZAKIBAYDOUN/greenhiil-full-website",
+        "private": false,
+        "created_at": "2025-08-04T10:57:05Z",
+        "updated_at": "2025-08-12T17:14:25Z",
+        "language": "HTML",
+        "is_cannabis_app": false
+      },
+      {
+        "name": "greenhill-gpt-agent-portal",
+        "full_name": "ZAKIBAYDOUN/greenhill-gpt-agent-portal",
+        "private": false,
+        "created_at": "2025-08-02T13:49:43Z",
+        "updated_at": "2025-08-12T17:14:34Z",
+        "language": "Python",
+        "is_cannabis_app": false
+      },
+      {
+        "name": "greenhill-gpt-portal",
+        "full_name": "ZAKIBAYDOUN/greenhill-gpt-portal",
+        "private": false,
+        "created_at": "2025-08-02T14:51:19Z",
+        "updated_at": "2025-08-12T17:14:44Z",
+        "language": "Python",
+        "is_cannabis_app": false
+      },
+      {
+        "name": "greenhill-investor-assistant",
+        "full_name": "ZAKIBAYDOUN/greenhill-investor-assistant",
+        "private": false,
+        "created_at": "2025-08-02T16:06:47Z",
+        "updated_at": "2025-08-16T12:28:03Z",
+        "language": "Python",
+        "is_cannabis_app": false
+      },
+      {
+        "name": "greenhill-website-full",
+        "full_name": "ZAKIBAYDOUN/greenhill-website-full",
+        "private": false,
+        "created_at": "2025-08-04T11:04:56Z",
+        "updated_at": "2025-08-04T11:04:56Z",
+        "language": null,
+        "is_cannabis_app": false
+      },
+      {
+        "name": "greenhillgpt",
+        "full_name": "ZAKIBAYDOUN/greenhillgpt",
+        "private": false,
+        "created_at": "2025-08-20T16:25:12Z",
+        "updated_at": "2025-08-20T16:25:38Z",
+        "language": null,
+        "is_cannabis_app": true
+      },
+      {
+        "name": "ground-control",
+        "full_name": "ZAKIBAYDOUN/ground-control",
+        "private": false,
+        "created_at": "2025-08-20T16:25:26Z",
+        "updated_at": "2025-08-20T16:25:46Z",
+        "language": null,
+        "is_cannabis_app": true
+      },
+      {
+        "name": "hello-world",
+        "full_name": "ZAKIBAYDOUN/hello-world",
+        "private": false,
+        "created_at": "2018-01-13T05:41:41Z",
+        "updated_at": "2018-01-13T05:41:41Z",
+        "language": null,
+        "is_cannabis_app": false
+      },
+      {
+        "name": "Quantum-Gaurd",
+        "full_name": "ZAKIBAYDOUN/Quantum-Gaurd",
+        "private": false,
+        "created_at": "2025-08-12T17:02:09Z",
+        "updated_at": "2025-08-12T17:14:19Z",
+        "language": "TypeScript",
+        "is_cannabis_app": false
+      },
+      {
+        "name": "symmetrical-system",
+        "full_name": "ZAKIBAYDOUN/symmetrical-system",
+        "private": false,
+        "created_at": "2025-08-02T13:46:53Z",
+        "updated_at": "2025-08-02T13:46:53Z",
+        "language": null,
+        "is_cannabis_app": false
+      }
+    ],
+    "cannabis_apps_found": [
+      {
+        "name": "digital-roots",
+        "location": "parent_org",
+        "org_name": "green-hill-canarias",
+        "full_name": "green-hill-canarias/digital-roots",
+        "private": false,
+        "language": null
+      },
+      {
+        "name": "digital-roots",
+        "location": "user_repos",
+        "org_name": "personal",
+        "full_name": "ZAKIBAYDOUN/digital-roots",
+        "private": false,
+        "language": null
+      },
+      {
+        "name": "greenhillgpt",
+        "location": "user_repos",
+        "org_name": "personal",
+        "full_name": "ZAKIBAYDOUN/greenhillgpt",
+        "private": false,
+        "language": null
+      },
+      {
+        "name": "ground-control",
+        "location": "user_repos",
+        "org_name": "personal",
+        "full_name": "ZAKIBAYDOUN/ground-control",
+        "private": false,
+        "language": null
+      }
+    ],
+    "permission_issues": [],
+    "recommendations": []
+  },
+  "emergency_instructions": {
+    "streamlit_secrets": {
+      "DEMO_MODE": "true",
+      "BYPASS_AUTH": "true",
+      "LANGCHAIN_TRACING_V2": "false",
+      "EMERGENCY_MODE": "true",
+      "LOCAL_FALLBACK": "true",
+      "SKIP_GITHUB_ACTIONS": "true"
+    },
+    "environment_override": {
+      "DEMO_MODE": "true",
+      "BYPASS_AUTH": "true",
+      "LANGCHAIN_TRACING_V2": "false",
+      "EMERGENCY_MODE": "true",
+      "LOCAL_FALLBACK": "true",
+      "SKIP_GITHUB_ACTIONS": "true"
+    },
+    "local_cache_db": "emergency_cache.db",
+    "bypass_mode": true
+  }
+}

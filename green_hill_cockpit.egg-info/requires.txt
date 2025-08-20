@@ -1,0 +1,7 @@
+langgraph
+langchain-core
+langchain-openai
+openai>=1.14
+fastapi
+uvicorn
+requests

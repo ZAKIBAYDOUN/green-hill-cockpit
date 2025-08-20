@@ -1,0 +1,54 @@
+🚨 SECURITY ALERT - IMMEDIATE ACTION REQUIRED 🚨
+================================================
+
+**COMPROMISED API KEY DETECTED**
+
+Key: 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
+Status: PUBLICLY EXPOSED
+Risk Level: CRITICAL
+
+**IMMEDIATE ACTIONS REQUIRED:**
+
+1. **REVOKE THE KEY NOW:**
+   - Go to https://smith.langchain.com/settings
+   - Find the compromised key
+   - Click "Delete" or "Revoke" IMMEDIATELY
+
+2. **GENERATE NEW KEY:**
+   - Create a new API key in LangSmith
+   - Use a different name/description
+   - Copy the new key safely
+
+3. **UPDATE ALL LOCATIONS:**
+   - .env file (already cleaned)
+   - Streamlit secrets in all apps
+   - GitHub repository secrets
+   - Any other configuration files
+
+4. **CLEAN GITHUB HISTORY:**
+   - The key was committed to public repositories
+   - Consider using git filter-branch to remove from history
+   - Or create new repositories with clean history
+
+5. **AUDIT ACCESS:**
+   - Check LangSmith logs for unauthorized usage
+   - Monitor for any suspicious activity
+   - Review all recent API calls
+
+**FILES CLEANED (need new keys):**
+- /workspaces/green-hill-cockpit/.env
+- /workspaces/green-hill-cockpit/emergency_deploy_apps.py
+- All cannabis app repositories (.streamlit/secrets.toml)
+
+**NEXT STEPS:**
+1. Revoke the old key in LangSmith console
+2. Generate new API key
+3. Update all configuration files
+4. Test all applications with new key
+5. Monitor for any security issues
+
+**⚠️ DO NOT USE THE OLD KEY ANYWHERE - IT'S COMPROMISED ⚠️**
+
+Contact: zakibaydoun@msn.com if you need help securing your account.
+
+Generated: 2025-08-20 16:59:00 UTC

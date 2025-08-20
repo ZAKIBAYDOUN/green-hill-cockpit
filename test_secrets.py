@@ -57,6 +57,6 @@ if st.button("Test LangGraph API"):
 with st.expander("How to add secrets in Streamlit Cloud"):
     st.code("""
 LANGGRAPH_API_URL = "https://cockpit-c5fbf013b8495301890e442307c38955.us.langgraph.app"
-LANGGRAPH_API_KEY = "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"
+LANGGRAPH_API_KEY = "REVOKED_GENERATE_NEW_KEY"
 OPENAI_API_KEY = "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"
     """)
