@@ -196,7 +196,20 @@ LANG = {
 }
 
 # Environment setup - bridge st.secrets to os.environ
-def setup_environment():
+def setup_environment()
+
+# API Configuration
+LANGGRAPH_API_URL = os.getenv("LANGGRAPH_API_URL", "https://cockpit-c5fbf013b8495301890e442307c38955.us.langgraph.app")
+LANGGRAPH_API_KEY = os.getenv("LANGGRAPH_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+DEMO_MODE = os.getenv("DEMO_MODE", "false")
+GHC_DT_MODEL = os.getenv("GHC_DT_MODEL", "gpt-4o-mini")
+GHC_DT_TEMPERATURE = os.getenv("GHC_DT_TEMPERATURE", "0.2")
+GHC_DT_EVIDENCE_LOG = os.getenv("GHC_DT_EVIDENCE_LOG", "evidence.jsonl")
+
+
+# API Configuration
+os.getenv("LANGGRAPH_API_URL", "https://cockpit-c5fbf013b8495301890e442307c38955.us.langgraph.app")
     """Bridge Streamlit secrets to environment variables"""
     secret_keys = ["LANGGRAPH_API_URL", "LANGGRAPH_API_KEY", "OPENAI_API_KEY", 
                    "DEMO_MODE", "GHC_DT_MODEL", "GHC_DT_TEMPERATURE", "GHC_DT_EVIDENCE_LOG"]
