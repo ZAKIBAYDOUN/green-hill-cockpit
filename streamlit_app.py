@@ -196,7 +196,7 @@ LANG = {
 }
 
 # Environment setup - bridge st.secrets to os.environ
-def setup_environment()
+def setup_environment():
 
 # API Configuration
 LANGGRAPH_API_URL = os.getenv("LANGGRAPH_API_URL", "https://cockpit-c5fbf013b8495301890e442307c38955.us.langgraph.app")
