@@ -177,7 +177,7 @@ def setup_environment():
                 os.environ[key] = st.secrets[key]
         except:
             pass  # Use existing env var or default
-def load_state(): -> Dict[str, Any]:
+def load_state() -> Dict[str, Any]:
     """Load system state from file"""
     default_state = {
         "phase": "Phase 1: Pre-Operational Setup",
@@ -251,7 +251,7 @@ def call_langgraph(question: str, command: Optional[str], agent: str, state: Dic
             "message": f"Connection error: {str(e)}"
         }
 
-def test_langgraph_connection(): -> bool:
+def test_langgraph_connection() -> bool:
     """Test LangGraph API connection"""
     try:
         headers = {}
@@ -267,7 +267,7 @@ def test_langgraph_connection(): -> bool:
     except:
         return False
 
-def test_openai_connection(): -> bool:
+def test_openai_connection() -> bool:
     """Test OpenAI API connection"""
     if not OPENAI_API_KEY:
         return False
